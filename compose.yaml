@@ -1,0 +1,25 @@
+# Run the Kitten text-to-speech service on port 8788:
+#   docker compose up -d
+# Stop it with:
+#   docker compose down
+#
+# Each KITTEN_* variable sets a default that any request can override.
+# The model is chosen at build time instead:
+#   docker compose build --build-arg KITTEN_MODEL=KittenML/kitten-tts-micro-0.8
+services:
+  kitten-tts:
+    build: .
+    image: kitten-tts
+    ports:
+      - "8788:8788"
+    restart: unless-stopped
+    environment:
+      KITTEN_VOICE: Bruno
+      # KITTEN_SPEED: "1.0"
+      # KITTEN_FORMAT: wav
+      # KITTEN_SAMPLE_RATE: "24000"
+      # KITTEN_GAIN_DB: "0.0"
+      # KITTEN_CLEAN_TEXT: "true"
+      # KITTEN_MAX_CHUNK_CHARS: "400"
+      # KITTEN_MAX_TEXT_CHARS: "0"
+      # KITTEN_BACKEND: cpu

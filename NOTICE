@@ -1,0 +1,9 @@
+Kitten TTS API
+Copyright 2026 Mohan G
+
+This product bundles and depends on KittenTTS
+(https://github.com/KittenML/KittenTTS), Copyright KittenML, which is
+licensed under the Apache License, Version 2.0.
+
+The Kitten TTS model weights published at https://huggingface.co/KittenML
+are likewise licensed under the Apache License, Version 2.0.
