@@ -68,7 +68,7 @@ Silicon.
 To pin a version instead of tracking the newest build, use a version tag:
 
 ```bash
-docker run -d -p 8788:8788 ghcr.io/gmkr/kitten-tts-api:1.0.0 # x-release-please-version
+docker run -d -p 8788:8788 ghcr.io/gmkr/kitten-tts-api:1.1.0 # x-release-please-version
 ```
 
 | Tag | What you get |
