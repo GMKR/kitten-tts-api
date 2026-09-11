@@ -7,6 +7,11 @@
 # Commit messages must follow Conventional Commits, such as "feat: add opus
 # output" or "fix: reject empty text". A commit with no recognized prefix
 # does not appear in the changelog.
+#
+# The tag release-please pushes cannot start the image workflow on its own:
+# GitHub ignores events raised with GITHUB_TOKEN so that workflows cannot
+# trigger themselves forever. workflow_dispatch is a documented exception,
+# so this workflow asks for the image build explicitly.
 name: Release please
 
 on:
@@ -17,13 +22,25 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 jobs:
   release-please:
     runs-on: ubuntu-24.04
     steps:
       - uses: googleapis/release-please-action@v5
+        id: release
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish the image for the new tag
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run docker.yml \
+            --repo "${{ github.repository }}" \
+            --ref "${{ steps.release.outputs.tag_name }}"
+          echo "Requested an image build for ${{ steps.release.outputs.tag_name }}"
