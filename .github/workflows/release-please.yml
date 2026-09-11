@@ -1,0 +1,29 @@
+# Keep a release pull request open that tracks every change landed on main.
+#
+# Merging that pull request writes the changelog, bumps version.txt, tags the
+# commit, and publishes a GitHub release. Pushing the tag then starts the
+# image workflow, which publishes the matching version tags to the registry.
+#
+# Commit messages must follow Conventional Commits, such as "feat: add opus
+# output" or "fix: reject empty text". A commit with no recognized prefix
+# does not appear in the changelog.
+name: Release please
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: googleapis/release-please-action@v5
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+          token: ${{ secrets.GITHUB_TOKEN }}
